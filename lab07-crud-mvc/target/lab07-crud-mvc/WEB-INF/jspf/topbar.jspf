@@ -1,0 +1,24 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<header class="topbar">
+    <div class="topbar-left">
+        <button type="button" class="btn-hamburger" id="btnHamburger" aria-label="Toggle menu">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="topbar-title">
+            <h1>${pageTitle}</h1>
+            <c:if test="${not empty pageSubtitle}">
+                <p class="topbar-subtitle">${pageSubtitle}</p>
+            </c:if>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <c:if test="${not empty sessionScope.username}">
+            <div class="user-chip">
+                <div class="user-avatar">${fn:toUpperCase(fn:substring(sessionScope.username, 0, 1))}</div>
+                <span class="user-name">${sessionScope.username}</span>
+            </div>
+        </c:if>
+    </div>
+</header>

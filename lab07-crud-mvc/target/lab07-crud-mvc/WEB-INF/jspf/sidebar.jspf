@@ -1,0 +1,51 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+        <div class="brand-text">
+            <span class="brand-name">AcademicMS</span>
+            <span class="brand-sub">Lab 7 MVC</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="${pageContext.request.contextPath}/" class="nav-item${activeNav == 'dashboard' ? ' active' : ''}">
+            <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/sinh-vien" class="nav-item${activeNav == 'sinh-vien' ? ' active' : ''}">
+            <i class="bi bi-people-fill"></i><span>Sinh viên</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/sach" class="nav-item${activeNav == 'sach' ? ' active' : ''}">
+            <i class="bi bi-book-fill"></i><span>Sách</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/san-pham" class="nav-item${activeNav == 'san-pham' ? ' active' : ''}">
+            <i class="bi bi-box-seam-fill"></i><span>Sản phẩm</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/lop-hoc" class="nav-item${activeNav == 'lop-hoc' ? ' active' : ''}">
+            <i class="bi bi-building"></i><span>Lớp học</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/diem" class="nav-item${activeNav == 'diem' ? ' active' : ''}">
+            <i class="bi bi-clipboard-data-fill"></i><span>Điểm</span>
+        </a>
+        <a href="${pageContext.request.contextPath}/gio-hang" class="nav-item${activeNav == 'gio-hang' ? ' active' : ''}">
+            <i class="bi bi-cart-fill"></i><span>Giỏ hàng</span>
+        </a>
+        <div class="nav-divider"></div>
+        <c:choose>
+            <c:when test="${not empty sessionScope.username}">
+                <a href="${pageContext.request.contextPath}/admin/" class="nav-item${activeNav == 'admin' ? ' active' : ''}">
+                    <i class="bi bi-shield-lock-fill"></i><span>Quản trị</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/logout" class="nav-item">
+                    <i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/login.jsp" class="nav-item${activeNav == 'login' ? ' active' : ''}">
+                    <i class="bi bi-person-circle"></i><span>Đăng nhập</span>
+                </a>
+            </c:otherwise>
+        </c:choose>
+    </nav>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
