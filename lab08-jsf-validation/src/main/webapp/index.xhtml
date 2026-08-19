@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Lab 8 - Trang chủ JSF &amp; Validation</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Chương 3: Phát triển ứng dụng Đa lớp trong Jakarta EE</h2>
+            <p>Chào mừng bạn đến với bài thực hành <strong>Lab 8 - Chuyển một form sang JSF, thêm validation và message</strong>.</p>
+            <p>Bài lab này minh họa cơ chế component-based UI, Jakarta Bean Validation và FacesMessage thông báo thành công / lỗi.</p>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="border: 1px solid #e2e8f0; padding: 1.2rem; border-radius: 8px; background: #fafafa;">
+                    <h3 style="margin-top:0; color: #2563eb;">1. Quản lý Sinh viên (Bài 1 - 5, 9, 10, 12)</h3>
+                    <p>Form sinh viên JSF có validation, dropdown chọn lớp, sửa, xóa và tìm kiếm.</p>
+                    <p>
+                        <h:link outcome="sinhvien-form" value="➕ Thêm mới Sinh viên" styleClass="btn btn-primary btn-sm" style="margin-right:0.5rem;" />
+                        <h:link outcome="sinhvien-list" value="📋 Danh sách Sinh viên" styleClass="btn btn-secondary btn-sm" />
+                    </p>
+                </div>
+
+                <div style="border: 1px solid #e2e8f0; padding: 1.2rem; border-radius: 8px; background: #fafafa;">
+                    <h3 style="margin-top:0; color: #2563eb;">2. Quản lý Sách (Bài 6)</h3>
+                    <p>Chuyển form Sách sang JSF với validation mã, tên sách, tác giả và năm xuất bản.</p>
+                    <p>
+                        <h:link outcome="sach-form" value="➕ Nhập Sách mới" styleClass="btn btn-primary btn-sm" style="margin-right:0.5rem;" />
+                        <h:link outcome="sach-list" value="📚 Danh mục Sách" styleClass="btn btn-secondary btn-sm" />
+                    </p>
+                </div>
+
+                <div style="border: 1px solid #e2e8f0; padding: 1.2rem; border-radius: 8px; background: #fafafa;">
+                    <h3 style="margin-top:0; color: #2563eb;">3. Quản lý Sản phẩm (Bài 7)</h3>
+                    <p>Form sản phẩm JSF validate tên, giá > 0 và số lượng >= 0.</p>
+                    <p>
+                        <h:link outcome="product-form" value="➕ Thêm Sản phẩm" styleClass="btn btn-primary btn-sm" style="margin-right:0.5rem;" />
+                        <h:link outcome="product-list" value="🛒 Danh sách Sản phẩm" styleClass="btn btn-secondary btn-sm" />
+                    </p>
+                </div>
+
+                <div style="border: 1px solid #e2e8f0; padding: 1.2rem; border-radius: 8px; background: #fafafa;">
+                    <h3 style="margin-top:0; color: #2563eb;">4. Đăng nhập &amp; Xác thực (Bài 8)</h3>
+                    <p>Form đăng nhập JSF gửi FacesMessage và chuyển hướng trang chủ khi thành công.</p>
+                    <p>
+                        <h:link outcome="login" value="🔑 Mở trang Đăng nhập" styleClass="btn btn-primary btn-sm" />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

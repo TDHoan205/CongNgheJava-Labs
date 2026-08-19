@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Form Sinh viên - JSF</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">
+                #{sinhVienBean.edit ? 'Cập nhật sinh viên (Bài 9)' : 'Thêm mới sinh viên (Bài 4 &amp; 12)'}
+            </h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <h:form id="svForm">
+                <h:inputHidden value="#{sinhVienBean.sinhVien.id}" />
+
+                <div class="form-group">
+                    <h:outputLabel for="ma" value="Mã SV (*):" />
+                    <h:inputText id="ma" value="#{sinhVienBean.sinhVien.maSinhVien}"
+                                 required="true" requiredMessage="Mã sinh viên bắt buộc nhập"
+                                 styleClass="form-control" />
+                    <h:message for="ma" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="hoten" value="Họ tên (*):" />
+                    <h:inputText id="hoten" value="#{sinhVienBean.sinhVien.hoTen}"
+                                 styleClass="form-control" />
+                    <h:message for="hoten" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="email" value="Email:" />
+                    <h:inputText id="email" value="#{sinhVienBean.sinhVien.email}"
+                                 styleClass="form-control" />
+                    <h:message for="email" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="lop" value="Lớp (Bài 12 - selectOneMenu):" />
+                    <h:selectOneMenu id="lop" value="#{sinhVienBean.sinhVien.lop}" styleClass="form-control">
+                        <f:selectItem itemLabel="-- Chọn lớp học --" itemValue="" />
+                        <f:selectItems value="#{sinhVienBean.danhSachLop}" />
+                    </h:selectOneMenu>
+                    <h:message for="lop" styleClass="error-msg" />
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h:commandButton value="#{sinhVienBean.edit ? 'Cập nhật Sinh viên' : 'Lưu Sinh viên'}"
+                                     action="#{sinhVienBean.save}"
+                                     styleClass="btn btn-primary" style="margin-right:0.5rem;" />
+                    <h:commandButton value="Nhập lại / Hủy"
+                                     action="#{sinhVienBean.resetForm}" immediate="true"
+                                     styleClass="btn btn-secondary" style="margin-right:0.5rem;" />
+                    <h:link outcome="sinhvien-list" value="Xem danh sách" styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

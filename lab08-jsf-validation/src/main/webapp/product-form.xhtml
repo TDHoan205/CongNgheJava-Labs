@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Quản lý Sản phẩm - Form (Bài 7)</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">#{sanPhamBean.edit ? 'Cập nhật Sản phẩm' : 'Thêm Sản phẩm mới (Bài 7)'}</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <h:form id="productForm">
+                <h:inputHidden value="#{sanPhamBean.sanPham.id}" />
+
+                <div class="form-group">
+                    <h:outputLabel for="maSp" value="Mã sản phẩm (*):" />
+                    <h:inputText id="maSp" value="#{sanPhamBean.sanPham.maSp}" styleClass="form-control" />
+                    <h:message for="maSp" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="tenSp" value="Tên sản phẩm (*):" />
+                    <h:inputText id="tenSp" value="#{sanPhamBean.sanPham.tenSp}" styleClass="form-control" />
+                    <h:message for="tenSp" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="giaSp" value="Đơn giá (* > 0):" />
+                    <h:inputText id="giaSp" value="#{sanPhamBean.sanPham.gia}" styleClass="form-control" />
+                    <h:message for="giaSp" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="soLuong" value="Số lượng (* >= 0):" />
+                    <h:inputText id="soLuong" value="#{sanPhamBean.sanPham.soLuong}" styleClass="form-control" />
+                    <h:message for="soLuong" styleClass="error-msg" />
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h:commandButton value="#{sanPhamBean.edit ? 'Cập nhật' : 'Lưu Sản phẩm'}"
+                                     action="#{sanPhamBean.save}" styleClass="btn btn-primary" style="margin-right:0.5rem;" />
+                    <h:commandButton value="Nhập lại" action="#{sanPhamBean.resetForm}" immediate="true"
+                                     styleClass="btn btn-secondary" style="margin-right:0.5rem;" />
+                    <h:link outcome="product-list" value="Xem danh sách Sản phẩm" styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

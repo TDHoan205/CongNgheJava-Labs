@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Danh mục Sách - JSF (Bài 6)</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Danh mục Sách (Bài 6)</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <h:form id="sachListForm">
+                <h:dataTable value="#{sachBean.dsSach}" var="s" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{s.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Mã Sách</f:facet>
+                        #{s.maSach}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tên Sách</f:facet>
+                        #{s.tenSach}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tác Giả</f:facet>
+                        #{s.tacGia}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Năm XB</f:facet>
+                        #{s.namXuatBan}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Giá (VNĐ)</f:facet>
+                        <h:outputText value="#{s.gia}">
+                            <f:convertNumber pattern="#,##0 VNĐ" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Thao tác</f:facet>
+                        <h:commandButton value="Sửa" action="#{sachBean.prepareEdit(s)}" styleClass="btn btn-secondary btn-sm" style="margin-right:0.4rem;" />
+                        <h:commandButton value="Xóa" action="#{sachBean.delete(s.id)}" styleClass="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa sách này?');" />
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <div style="margin-top: 1.5rem;">
+                <h:link outcome="sach-form" value="➕ Thêm Sách mới" styleClass="btn btn-primary" />
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

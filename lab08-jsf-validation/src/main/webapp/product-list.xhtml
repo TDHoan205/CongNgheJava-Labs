@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Danh sách Sản phẩm - JSF (Bài 7)</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Danh sách Sản phẩm (Bài 7)</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <h:form id="productListForm">
+                <h:dataTable value="#{sanPhamBean.dsSanPham}" var="p" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{p.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Mã SP</f:facet>
+                        #{p.maSp}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tên sản phẩm</f:facet>
+                        #{p.tenSp}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Đơn giá (VNĐ)</f:facet>
+                        <h:outputText value="#{p.gia}">
+                            <f:convertNumber pattern="#,##0 VNĐ" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Số lượng</f:facet>
+                        #{p.soLuong}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Thao tác</f:facet>
+                        <h:commandButton value="Sửa" action="#{sanPhamBean.prepareEdit(p)}" styleClass="btn btn-secondary btn-sm" style="margin-right:0.4rem;" />
+                        <h:commandButton value="Xóa" action="#{sanPhamBean.delete(p.id)}" styleClass="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" />
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <div style="margin-top: 1.5rem;">
+                <h:link outcome="product-form" value="➕ Thêm Sản phẩm mới" styleClass="btn btn-primary" />
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

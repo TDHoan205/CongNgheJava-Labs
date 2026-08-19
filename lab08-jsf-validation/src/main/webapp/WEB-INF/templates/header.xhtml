@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<body>
+<ui:composition>
+    <header>
+        <div class="nav-container">
+            <h:link outcome="index" styleClass="brand-logo" value="Lab 8 - Jakarta Faces (JSF)" />
+            <ul class="nav-menu">
+                <li><h:link outcome="index" value="Trang chủ" /></li>
+                <li><h:link outcome="sinhvien-form" value="Form Sinh Viên" /></li>
+                <li><h:link outcome="sinhvien-list" value="DS Sinh Viên" /></li>
+                <li><h:link outcome="sach-form" value="Quản lý Sách" /></li>
+                <li><h:link outcome="product-form" value="Sản Phẩm" /></li>
+                <li>
+                    <h:panelGroup rendered="#{not loginBean.loggedIn}">
+                        <h:link outcome="login" value="Đăng nhập" />
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginBean.loggedIn}">
+                        <h:form style="display:inline;">
+                            <h:commandLink action="#{loginBean.logout}" value="Đăng xuất (#{loginBean.currentUser})" style="color:#f87171;" />
+                        </h:form>
+                    </h:panelGroup>
+                </li>
+            </ul>
+        </div>
+    </header>
+</ui:composition>
+</body>
+</html>

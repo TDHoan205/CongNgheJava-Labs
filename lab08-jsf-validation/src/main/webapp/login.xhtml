@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Đăng nhập - JSF (Bài 8)</ui:define>
+
+    <ui:define name="content">
+        <div class="card" style="max-width: 480px; margin: 3rem auto;">
+            <h2 class="card-title" style="text-align: center;">🔑 Đăng nhập hệ thống (Bài 8)</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list alert-error-list" />
+
+            <h:form id="loginForm">
+                <div class="form-group">
+                    <h:outputLabel for="user" value="Tên đăng nhập (*):" />
+                    <h:inputText id="user" value="#{loginBean.username}"
+                                 required="true" requiredMessage="Tên đăng nhập không được để trống"
+                                 styleClass="form-control" placeholder="Nhập admin..." />
+                    <h:message for="user" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="pass" value="Mật khẩu (*):" />
+                    <h:inputSecret id="pass" value="#{loginBean.password}"
+                                   required="true" requiredMessage="Mật khẩu không được để trống"
+                                   styleClass="form-control" placeholder="Nhập 123456..." />
+                    <h:message for="pass" styleClass="error-msg" />
+                </div>
+
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <h:commandButton value="Đăng nhập" action="#{loginBean.login}"
+                                     styleClass="btn btn-primary" style="width: 100%;" />
+                </div>
+
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem; text-align: center;">
+                    💡 Tài khoản mặc định: bất kỳ username / Mật khẩu: <code>123456</code>
+                </p>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

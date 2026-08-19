@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Quản lý Sách - Form (Bài 6)</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">#{sachBean.edit ? 'Cập nhật thông tin Sách' : 'Thêm Sách mới (Bài 6)'}</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <h:form id="sachForm">
+                <h:inputHidden value="#{sachBean.sach.id}" />
+
+                <div class="form-group">
+                    <h:outputLabel for="maSach" value="Mã sách (*):" />
+                    <h:inputText id="maSach" value="#{sachBean.sach.maSach}" styleClass="form-control" />
+                    <h:message for="maSach" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="tenSach" value="Tên sách (*):" />
+                    <h:inputText id="tenSach" value="#{sachBean.sach.tenSach}" styleClass="form-control" />
+                    <h:message for="tenSach" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="tacGia" value="Tác giả (*):" />
+                    <h:inputText id="tacGia" value="#{sachBean.sach.tacGia}" styleClass="form-control" />
+                    <h:message for="tacGia" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="namXB" value="Năm xuất bản (* >= 1800):" />
+                    <h:inputText id="namXB" value="#{sachBean.sach.namXuatBan}" styleClass="form-control" />
+                    <h:message for="namXB" styleClass="error-msg" />
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="gia" value="Giá sách (VNĐ):" />
+                    <h:inputText id="gia" value="#{sachBean.sach.gia}" styleClass="form-control" />
+                    <h:message for="gia" styleClass="error-msg" />
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h:commandButton value="#{sachBean.edit ? 'Cập nhật' : 'Lưu Sách'}"
+                                     action="#{sachBean.save}" styleClass="btn btn-primary" style="margin-right:0.5rem;" />
+                    <h:commandButton value="Nhập lại" action="#{sachBean.resetForm}" immediate="true"
+                                     styleClass="btn btn-secondary" style="margin-right:0.5rem;" />
+                    <h:link outcome="sach-list" value="Xem danh mục Sách" styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

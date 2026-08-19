@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">Danh sách Sinh viên - JSF</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Danh sách Sinh viên</h2>
+
+            <h:messages globalOnly="true" styleClass="alert-list" />
+
+            <!-- Search Form (Bài 10) -->
+            <h:form styleClass="search-box">
+                <h:outputLabel value="Tìm kiếm:" style="font-weight:600;" />
+                <h:inputText value="#{sinhVienBean.keyword}" placeholder="Nhập tên hoặc lớp..." styleClass="form-control" style="width:250px;" />
+                <h:commandButton value="Lọc danh sách" action="#{sinhVienBean.search}" styleClass="btn btn-primary btn-sm" />
+            </h:form>
+
+            <h:form id="listForm">
+                <h:dataTable value="#{sinhVienBean.dsSinhVien}" var="sv" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{sv.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Mã SV</f:facet>
+                        #{sv.maSinhVien}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Họ tên</f:facet>
+                        #{sv.hoTen}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Email</f:facet>
+                        #{sv.email}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Lớp</f:facet>
+                        #{sv.lop}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Thao tác</f:facet>
+                        <h:commandButton value="✏️ Sửa" action="#{sinhVienBean.prepareEdit(sv)}"
+                                         styleClass="btn btn-secondary btn-sm" style="margin-right: 0.4rem;" />
+                        <h:commandButton value="🗑️ Xóa" action="#{sinhVienBean.delete(sv.id)}"
+                                         styleClass="btn btn-danger btn-sm"
+                                         onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?');" />
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <div style="margin-top: 1.5rem;">
+                <h:link outcome="sinhvien-form" value="➕ Thêm sinh viên mới" styleClass="btn btn-primary" />
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>
