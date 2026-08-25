@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <!-- Primary Persistence Unit for MySQL -->
+    <persistence-unit name="lab09PU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>vn.edu.eaut.lab9.model.LopHoc</class>
+        <class>vn.edu.eaut.lab9.model.SinhVien</class>
+        <class>vn.edu.eaut.lab9.model.MonHoc</class>
+        <class>vn.edu.eaut.lab9.model.Diem</class>
+        <class>vn.edu.eaut.lab9.model.Role</class>
+        <class>vn.edu.eaut.lab9.model.User</class>
+        <class>vn.edu.eaut.lab9.model.Sach</class>
+        <class>vn.edu.eaut.lab9.model.SanPham</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/lab09_jpa?useUnicode=true&amp;characterEncoding=UTF-8&amp;createDatabaseIfNotExist=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="123456"/>
+
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.highlight_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+
+    <!-- Test Persistence Unit for Standalone Unit Tests -->
+    <persistence-unit name="lab09TestPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>vn.edu.eaut.lab9.model.LopHoc</class>
+        <class>vn.edu.eaut.lab9.model.SinhVien</class>
+        <class>vn.edu.eaut.lab9.model.MonHoc</class>
+        <class>vn.edu.eaut.lab9.model.Diem</class>
+        <class>vn.edu.eaut.lab9.model.Role</class>
+        <class>vn.edu.eaut.lab9.model.User</class>
+        <class>vn.edu.eaut.lab9.model.Sach</class>
+        <class>vn.edu.eaut.lab9.model.SanPham</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:lab09testdb;DB_CLOSE_DELAY=-1;MODE=MySQL"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
