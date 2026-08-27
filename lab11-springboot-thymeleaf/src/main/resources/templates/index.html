@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${title})}">
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('home')}"></header>
+
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero">
+            <h1 th:text="${message}">Chào mừng đến với Spring Boot</h1>
+            <p>Ứng dụng web được xây dựng với Spring Boot 3, Spring MVC và giao diện Thymeleaf dynamic rendering.</p>
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <a th:href="@{/students}" class="btn btn-primary">👨‍🎓 Xem Danh sách Sinh viên</a>
+                <a th:href="@{/courses}" class="btn btn-secondary">📚 Xem Danh sách Khóa học</a>
+            </div>
+        </section>
+
+        <!-- Feature Grid -->
+        <div class="card">
+            <h2 class="card-title">🚀 Đặc điểm nổi bật của Lab 11</h2>
+            <p class="card-subtitle">Ứng dụng kiến trúc Spring MVC 3 tầng tách biệt Controller, Model và View.</p>
+
+            <div class="grid-cards">
+                <div class="feature-box">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Spring Boot 3.2</h3>
+                    <p>Khởi tạo nhanh chóng với Maven starter web, tự động cấu hình (Auto-configuration) và nhúng sẵn Server Tomcat.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">🍃</div>
+                    <h3>Thymeleaf Template</h3>
+                    <p>Sử dụng các thẻ <code>th:text</code>, <code>th:href</code>, <code>th:each</code> để render HTML động trực tiếp từ Server.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">📂</div>
+                    <h3>Mô hình MVC</h3>
+                    <p>Controller tiếp nhận Request, nạp dữ liệu vào Model và chuyển tiếp đến Thymeleaf View hiển thị cho người dùng.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

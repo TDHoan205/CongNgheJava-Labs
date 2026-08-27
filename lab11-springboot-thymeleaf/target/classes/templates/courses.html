@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${title})}">
+    <meta charset="UTF-8">
+    <title>Danh sách Khóa học</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('courses')}"></header>
+
+    <main>
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <h1 class="card-title">📚 Danh sách Khóa học mẫu</h1>
+                    <p class="card-subtitle" style="margin-bottom: 0;">Danh sách 5 khóa học được truyền từ <code>CourseController</code> và hiển thị bằng Thymeleaf.</p>
+                </div>
+                <span class="badge badge-success" th:text="${#lists.size(courses)} + ' Môn học'">5 Môn học</span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã Môn Học</th>
+                            <th>Tên Môn Học</th>
+                            <th>Số Tín Chỉ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c, iterStat : ${courses}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #c084fc;" th:text="${c.courseCode}">IT3242</strong>
+                            </td>
+                            <td th:text="${c.courseName}">Công nghệ Java</td>
+                            <td>
+                                <span class="badge badge-info" th:text="${c.credits} + ' Tín chỉ'">3 Tín chỉ</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

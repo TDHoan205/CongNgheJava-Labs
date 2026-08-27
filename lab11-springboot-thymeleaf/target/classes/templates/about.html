@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Giới thiệu học phần')}">
+    <meta charset="UTF-8">
+    <title>Giới thiệu</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('about')}"></header>
+
+    <main>
+        <div class="card">
+            <h1 class="card-title">📖 Giới thiệu Bài thực hành Lab 11</h1>
+            <p class="card-subtitle">Thông tin về Học phần và Chương học được truyền động từ Spring Controller.</p>
+
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Học phần:</div>
+                    <div style="font-size: 1.3rem; font-weight: 700; color: #818cf8; margin-top: 0.25rem;" th:text="${course}">Công nghệ Java</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Nội dung bài học:</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: #c084fc; margin-top: 0.25rem;" th:text="${chapter}">Chương 4 - Spring Framework</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Mục tiêu & Yêu cầu:</div>
+                    <div style="font-size: 1rem; color: #e2e8f0; margin-top: 0.5rem; line-height: 1.7;" th:text="${description}">
+                        Nội dung chi tiết về Spring Boot và Thymeleaf.
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge badge-purple">Lab 11 Completed</span>
+                <a th:href="@{/students}" class="btn btn-primary">Chuyển đến Danh sách Sinh viên &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

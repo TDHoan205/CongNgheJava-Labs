@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} != null ? ${title} : 'Lab 11 - Spring Boot & Thymeleaf'">Lab 11 Spring Boot</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- Header & Navbar Fragment -->
+    <header th:fragment="header(activeTab)">
+        <div class="nav-container">
+            <a th:href="@{/}" class="brand">
+                <div class="brand-icon">🍃</div>
+                <span>EAUT Spring Boot</span>
+            </a>
+            <ul class="nav-menu">
+                <li>
+                    <a th:href="@{/}" th:class="${activeTab == 'home'} ? 'nav-link active' : 'nav-link'">Trang chủ</a>
+                </li>
+                <li>
+                    <a th:href="@{/about}" th:class="${activeTab == 'about'} ? 'nav-link active' : 'nav-link'">Giới
+                        thiệu</a>
+                </li>
+                <li>
+                    <a th:href="@{/students}"
+                        th:class="${activeTab == 'students'} ? 'nav-link active' : 'nav-link'">Sinh viên</a>
+                </li>
+                <li>
+                    <a th:href="@{/courses}" th:class="${activeTab == 'courses'} ? 'nav-link active' : 'nav-link'">Khóa
+                        học</a>
+                </li>
+                <li>
+                    <a th:href="@{/contact}" th:class="${activeTab == 'contact'} ? 'nav-link active' : 'nav-link'">Liên
+                        hệ</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer">
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 11: Spring Boot & Thymeleaf Framework</p>
+        <p style="margin-top: 0.3rem;">Sinh viên thực hiện: <strong>Trần Đức Hoàn</strong> - MSSV:
+            <strong>2030022</strong> - Lớp <strong>DCCNTT14.1</strong>
+        </p>
+    </footer>
+
+</body>
+
+</html>

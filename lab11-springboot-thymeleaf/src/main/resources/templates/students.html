@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${title})}">
+    <meta charset="UTF-8">
+    <title>Danh sách sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('students')}"></header>
+
+    <main>
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <h1 class="card-title">👨‍🎓 Danh sách Sinh viên mẫu</h1>
+                    <p class="card-subtitle" style="margin-bottom: 0;">Dữ liệu truyền từ <code>StudentController</code> qua <code>Model</code> và lặp bằng <code>th:each</code>.</p>
+                </div>
+                <span class="badge badge-info" th:text="${#lists.size(students)} + ' Sinh viên'">4 Sinh viên</span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã Sinh Viên</th>
+                            <th>Họ và Tên</th>
+                            <th>Email</th>
+                            <th>Lớp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s, iterStat : ${students}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #818cf8;" th:text="${s.studentCode}">SV001</strong>
+                            </td>
+                            <td th:text="${s.fullName}">Nguyễn Văn An</td>
+                            <td th:text="${s.email}">an@eaut.edu.vn</td>
+                            <td>
+                                <span class="badge badge-purple" th:text="${s.className}">DCCNTT13.10.1</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>
