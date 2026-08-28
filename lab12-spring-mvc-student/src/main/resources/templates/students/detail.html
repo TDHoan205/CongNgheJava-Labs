@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{students/layout :: head('Chi tiết Sinh viên')}">
+    <meta charset="UTF-8">
+    <title>Chi tiết Sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{students/layout :: header('')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 650px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">👁️ Chi tiết Sinh viên</h1>
+                    <p class="card-subtitle">Thông tin chi tiết được tải từ StudentService theo ID.</p>
+                </div>
+                <span class="badge badge-info" th:text="'ID: ' + ${student.id}">ID: 1</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Mã sinh viên:</div>
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #818cf8; margin-top: 0.2rem;" th:text="${student.studentCode}">SV001</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Họ và tên:</div>
+                    <div style="font-size: 1.15rem; font-weight: 600; color: #f8fafc; margin-top: 0.2rem;" th:text="${student.fullName}">Nguyễn Văn An</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Email:</div>
+                    <div style="font-size: 1rem; color: #38bdf8; margin-top: 0.2rem;" th:text="${student.email}">an@eaut.edu.vn</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Lớp học:</div>
+                    <div style="margin-top: 0.3rem;">
+                        <span class="badge badge-purple" style="font-size: 0.95rem; padding: 0.35rem 0.85rem;" th:text="${student.className}">DCCNTT13.10.1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.75rem; border-top: 1px solid #334155; padding-top: 1.25rem;">
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-primary">✏️ Sửa thông tin</a>
+                <a th:href="@{/students/delete/{id}(id=${student.id})}" class="btn btn-danger"
+                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên [[${student.fullName}]]?');">🗑️ Xóa sinh viên</a>
+                <a th:href="@{/students}" class="btn btn-secondary" style="margin-left: auto;">↩️ Quay lại danh sách</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{students/layout :: footer}"></footer>
+
+</body>
+</html>

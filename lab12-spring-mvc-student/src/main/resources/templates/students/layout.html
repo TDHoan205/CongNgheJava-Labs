@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} != null ? ${title} : 'Lab 12 - Quản lý Sinh viên'">Lab 12 Spring MVC</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header th:fragment="header(activeTab)">
+        <div class="nav-container">
+            <a th:href="@{/students}" class="brand">
+                <div class="brand-icon">🎓</div>
+                <span>EAUT Spring MVC</span>
+            </a>
+            <ul class="nav-menu">
+                <li>
+                    <a th:href="@{/students}" th:class="${activeTab == 'list'} ? 'nav-link active' : 'nav-link'">📋 Danh
+                        sách Sinh viên</a>
+                </li>
+                <li>
+                    <a th:href="@{/students/create}"
+                        th:class="${activeTab == 'create'} ? 'nav-link active' : 'nav-link'">➕ Thêm Sinh viên</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer">
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 12: Phát triển ứng dụng Web với Spring MVC</p>
+        <p style="margin-top: 0.3rem;">Sinh viên thực hiện: <strong>Trần Đức Hoàn</strong> - MSSV:
+            <strong>20230022</strong> - Lớp <strong>DCCNTT14.1</strong>
+        </p>
+    </footer>
+
+</body>
+
+</html>

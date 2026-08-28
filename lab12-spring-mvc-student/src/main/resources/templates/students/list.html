@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{students/layout :: head('Danh sách Sinh viên - Lab 12')}">
+    <meta charset="UTF-8">
+    <title>Danh sách sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{students/layout :: header('list')}"></header>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">👨‍🎓 Quản lý Danh sách Sinh viên</h1>
+                    <p class="card-subtitle">Ứng dụng Spring MVC + Thymeleaf Form + ModelAttribute & Validation</p>
+                </div>
+                <a th:href="@{/students/create}" class="btn btn-primary">➕ Thêm Sinh viên mới</a>
+            </div>
+
+            <!-- Success Alert -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>✅</span>
+                <span th:text="${successMessage}">Thao tác thành công!</span>
+            </div>
+
+            <!-- Search Form (Bài 9) -->
+            <form th:action="@{/students}" method="get" class="search-form">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm kiếm theo họ tên, mã sinh viên hoặc lớp..." style="max-width: 420px;">
+                <button type="submit" class="btn btn-secondary">🔍 Tìm kiếm</button>
+                <a th:if="${keyword != null and !keyword.isEmpty()}" th:href="@{/students}" class="btn btn-secondary">❌ Bỏ lọc</a>
+            </form>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã SV</th>
+                            <th>Họ và Tên</th>
+                            <th>Email</th>
+                            <th>Lớp</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s, iterStat : ${students}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #818cf8;" th:text="${s.studentCode}">SV001</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/students/detail/{id}(id=${s.id})}" style="color: #f8fafc; font-weight: 600; text-decoration: none;" th:text="${s.fullName}">Nguyễn Văn An</a>
+                            </td>
+                            <td th:text="${s.email}">an@eaut.edu.vn</td>
+                            <td>
+                                <span class="badge badge-purple" th:text="${s.className}">DCCNTT13.10.1</span>
+                            </td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a th:href="@{/students/detail/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">👁️ Chi tiết</a>
+                                <a th:href="@{/students/edit/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">✏️ Sửa</a>
+                                <a th:href="@{/students/delete/{id}(id=${s.id})}" class="btn btn-danger btn-sm"
+                                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên [[${s.fullName}]]?');">🗑️ Xóa</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(students)}">
+                            <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                Không tìm thấy sinh viên nào trong danh sách.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{students/layout :: footer}"></footer>
+
+</body>
+</html>
