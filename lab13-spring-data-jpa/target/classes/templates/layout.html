@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} != null ? ${title} : 'Lab 13 - Spring Data JPA'">Lab 13 Spring Data JPA</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:fragment="header(activeTab)">
+        <div class="nav-container">
+            <a th:href="@{/students}" class="brand">
+                <div class="brand-icon">🍃</div>
+                <span>EAUT Spring Data JPA</span>
+            </a>
+            <ul class="nav-menu">
+                <li>
+                    <a th:href="@{/students}" th:class="${activeTab == 'students'} ? 'nav-link active' : 'nav-link'">👨‍🎓 Quản lý Sinh viên</a>
+                </li>
+                <li>
+                    <a th:href="@{/courses}" th:class="${activeTab == 'courses'} ? 'nav-link active' : 'nav-link'">📚 Quản lý Môn học</a>
+                </li>
+                <li>
+                    <a href="/h2-console" target="_blank" class="nav-link" style="color: #38bdf8;">🗄️ H2 Console</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer">
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 13: Kết nối Cơ sở dữ liệu với Spring Data JPA & Hibernate</p>
+        <p style="margin-top: 0.3rem;">Sinh viên thực hiện: <strong>Trần Đức Hoàn</strong> - MSSV: <strong>2030022</strong> - Lớp <strong>DCCNTT14.10.1</strong></p>
+    </footer>
+
+</body>
+</html>

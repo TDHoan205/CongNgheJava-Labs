@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head(${pageTitle})}">
+    <meta charset="UTF-8">
+    <title>Form Môn học</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('courses')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 650px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title" th:text="${pageTitle}">Thêm Môn học mới</h1>
+                    <p class="card-subtitle">Thông tin sẽ được lưu trực tiếp vào CSDL bằng Spring Data JPA `save()`</p>
+                </div>
+            </div>
+
+            <!-- Course Form -->
+            <form th:action="@{/courses/save}" th:object="${course}" method="post">
+                <!-- Hidden ID for update -->
+                <input type="hidden" th:field="*{id}">
+
+                <!-- Course Code -->
+                <div class="form-group">
+                    <label class="form-label">Mã môn học (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="text" th:field="*{courseCode}"
+                           th:class="${#fields.hasErrors('courseCode')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: IT3242">
+                    <div class="error-text" th:if="${#fields.hasErrors('courseCode')}" th:errors="*{courseCode}">
+                        Lỗi mã môn học
+                    </div>
+                </div>
+
+                <!-- Course Name -->
+                <div class="form-group">
+                    <label class="form-label">Tên môn học (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="text" th:field="*{courseName}"
+                           th:class="${#fields.hasErrors('courseName')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: Công nghệ Java">
+                    <div class="error-text" th:if="${#fields.hasErrors('courseName')}" th:errors="*{courseName}">
+                        Lỗi tên môn học
+                    </div>
+                </div>
+
+                <!-- Credits -->
+                <div class="form-group">
+                    <label class="form-label">Số tín chỉ (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="number" th:field="*{credits}" min="1" max="10"
+                           th:class="${#fields.hasErrors('credits')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: 3">
+                    <div class="error-text" th:if="${#fields.hasErrors('credits')}" th:errors="*{credits}">
+                        Lỗi số tín chỉ
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div style="display: flex; gap: 1rem; margin-top: 1.75rem;">
+                    <button type="submit" class="btn btn-primary">💾 Lưu vào CSDL</button>
+                    <a th:href="@{/courses}" class="btn btn-secondary">↩️ Hủy / Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Chi tiết Môn học - Lab 13 Spring Data JPA')}">
+    <meta charset="UTF-8">
+    <title>Chi tiết môn học</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('courses')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📚 Chi tiết Môn học</h1>
+                    <p class="card-subtitle">Thông tin môn học được truy xuất từ Cơ sở dữ liệu</p>
+                </div>
+            </div>
+
+            <!-- Course Detail Table -->
+            <table style="margin-top: 1rem;">
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary); width: 160px;">ID:</td>
+                    <td style="padding: 0.75rem 1rem;" th:text="${course.id}">1</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Mã môn học:</td>
+                    <td style="padding: 0.75rem 1rem;">
+                        <strong style="color: #818cf8;" th:text="${course.courseCode}">IT3242</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Tên môn học:</td>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600;" th:text="${course.courseName}">Công nghệ Java</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Số tín chỉ:</td>
+                    <td style="padding: 0.75rem 1rem;">
+                        <span class="badge badge-info" th:text="${course.credits} + ' tín chỉ'">3 tín chỉ</span>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border);">
+                <a th:href="@{/courses/edit/{id}(id=${course.id})}" class="btn btn-primary">✏️ Chỉnh sửa</a>
+                <a th:href="@{/courses/delete/{id}(id=${course.id})}" class="btn btn-danger"
+                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa môn học [[${course.courseName}]]?');">🗑️ Xóa</a>
+                <a th:href="@{/courses}" class="btn btn-secondary">↩️ Quay lại danh sách</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

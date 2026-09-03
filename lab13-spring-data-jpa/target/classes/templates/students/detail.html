@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Chi tiết Sinh viên - Lab 13 Spring Data JPA')}">
+    <meta charset="UTF-8">
+    <title>Chi tiết sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('students')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">👨‍🎓 Chi tiết Sinh viên</h1>
+                    <p class="card-subtitle">Thông tin sinh viên được truy xuất từ Cơ sở dữ liệu</p>
+                </div>
+            </div>
+
+            <!-- Student Detail Table -->
+            <table style="margin-top: 1rem;">
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary); width: 160px;">ID:</td>
+                    <td style="padding: 0.75rem 1rem;" th:text="${student.id}">1</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Mã sinh viên:</td>
+                    <td style="padding: 0.75rem 1rem;">
+                        <strong style="color: #818cf8;" th:text="${student.studentCode}">SV001</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Họ và Tên:</td>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600;" th:text="${student.fullName}">Nguyễn Văn An</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Email:</td>
+                    <td style="padding: 0.75rem 1rem;" th:text="${student.email}">an@eaut.edu.vn</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-secondary);">Lớp:</td>
+                    <td style="padding: 0.75rem 1rem;">
+                        <span class="badge badge-purple" th:text="${student.className}">DCCNTT13.10.1</span>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border);">
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-primary">✏️ Chỉnh sửa</a>
+                <a th:href="@{/students/delete/{id}(id=${student.id})}" class="btn btn-danger"
+                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên [[${student.fullName}]]?');">🗑️ Xóa</a>
+                <a th:href="@{/students}" class="btn btn-secondary">↩️ Quay lại danh sách</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>
