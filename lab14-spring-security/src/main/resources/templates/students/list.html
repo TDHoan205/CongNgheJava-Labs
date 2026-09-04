@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Danh sách Sinh viên - Lab 14 Spring Security')}">
+    <meta charset="UTF-8">
+    <title>Danh sách sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('students')}"></header>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">👨‍🎓 Quản lý Sinh viên (Spring Security)</h1>
+                    <p class="card-subtitle">
+                        <!-- Hiển thị theo role -->
+                        <span sec:authorize="hasRole('ADMIN')">🔓 Bạn có quyền <strong>ADMIN</strong> - thêm/sửa/xóa sinh viên.</span>
+                        <span sec:authorize="hasRole('USER') and !hasRole('ADMIN')">👁️ Bạn đang xem với quyền <strong>USER</strong> - chỉ được xem.</span>
+                    </p>
+                </div>
+                <!-- Nút Thêm Sinh viên - chỉ ADMIN (Bài 5) -->
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/students/create}" class="btn btn-primary">
+                    ➕ Thêm Sinh viên mới
+                </a>
+            </div>
+
+            <!-- Success / Error Alert -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>✅</span>
+                <span th:text="${successMessage}">Thao tác thành công!</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>⚠️</span>
+                <span th:text="${errorMessage}">Đã xảy ra lỗi!</span>
+            </div>
+
+            <!-- Search Form (giữ nguyên từ Lab 13) -->
+            <form th:action="@{/students}" method="get" class="search-form">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm kiếm theo họ tên, mã sinh viên hoặc lớp..." style="max-width: 420px;">
+                <button type="submit" class="btn btn-secondary">🔍 Tìm kiếm</button>
+                <a th:if="${keyword != null and !keyword.isEmpty()}" th:href="@{/students}" class="btn btn-secondary">❌ Bỏ lọc</a>
+            </form>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã SV</th>
+                            <th>Họ và Tên</th>
+                            <th>Email</th>
+                            <th>Lớp</th>
+                            <!-- Thao tác - chỉ hiển thị khi đã đăng nhập -->
+                            <th sec:authorize="isAuthenticated()">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s, iterStat : ${students}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #818cf8;" th:text="${s.studentCode}">SV001</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/students/detail/{id}(id=${s.id})}" style="color: #f8fafc; font-weight: 600; text-decoration: none;" th:text="${s.fullName}">Nguyễn Văn An</a>
+                            </td>
+                            <td th:text="${s.email}">an@eaut.edu.vn</td>
+                            <td>
+                                <span class="badge badge-purple" th:text="${s.className}">DCCNTT13.10.1</span>
+                            </td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a th:href="@{/students/detail/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">👁️ Chi tiết</a>
+                                <!-- Nút Sửa/Xóa - chỉ ADMIN (Bài 5 + Bài 9) -->
+                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/students/edit/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">✏️ Sửa</a>
+                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/students/delete/{id}(id=${s.id})}" class="btn btn-danger btn-sm"
+                                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên [[${s.fullName}]]?');">🗑️ Xóa</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(students)}">
+                            <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                Không tìm thấy sinh viên nào trong cơ sở dữ liệu.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

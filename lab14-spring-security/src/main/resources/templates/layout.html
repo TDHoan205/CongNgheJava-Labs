@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} != null ? ${title} : 'Lab 14 - Spring Security'">Lab 14 Spring Security</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Navigation (Bài 8: menu khác nhau theo role) -->
+    <header th:fragment="header(activeTab)">
+        <div class="nav-container">
+            <a th:href="@{/students}" class="brand">
+                <div class="brand-icon">🔐</div>
+                <span>EAUT Spring Security</span>
+            </a>
+            <ul class="nav-menu">
+                <!-- STUDENT - ADMIN và USER đều thấy -->
+                <li sec:authorize="hasAnyRole('ADMIN','USER')">
+                    <a th:href="@{/students}" th:class="${activeTab == 'students'} ? 'nav-link active' : 'nav-link'">
+                        👨‍🎓 Quản lý Sinh viên
+                    </a>
+                </li>
+
+                <!-- COURSES - chỉ ADMIN mới thấy -->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/courses}" th:class="${activeTab == 'courses'} ? 'nav-link active' : 'nav-link'">
+                        📚 Quản lý Môn học
+                    </a>
+                </li>
+
+                <!-- H2 Console - chỉ ADMIN -->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a href="/h2-console" target="_blank" class="nav-link" style="color: #38bdf8;">
+                        🗄️ H2 Console
+                    </a>
+                </li>
+
+                <!-- User info khi đã đăng nhập (Bài 5) -->
+                <li sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
+                    <span style="color: #94a3b8; font-size: 0.9rem;">
+                        👤 <span sec:authentication="name">user</span>
+                        (<span sec:authorize="hasRole('ADMIN')" style="color: #818cf8;">ADMIN</span>
+                         <span sec:authorize="hasRole('USER')" style="color: #38bdf8;">USER</span>)
+                    </span>
+                </li>
+
+                <!-- Login link khi chưa đăng nhập -->
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}" class="nav-link" style="color: #34d399;">
+                        🔐 Đăng nhập
+                    </a>
+                </li>
+
+                <!-- Logout button - chỉ hiển thị khi đã đăng nhập -->
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="nav-link" style="background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); cursor: pointer;">
+                            🚪 Đăng xuất
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer">
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 14: Bảo mật ứng dụng với Spring Security</p>
+        <p style="margin-top: 0.3rem;">Sinh viên thực hiện: <strong>Trần Đức Hoàn</strong> - MSSV: <strong>2030022</strong> - Lớp <strong>DCCNTT14.10.1</strong></p>
+    </footer>
+
+</body>
+</html>

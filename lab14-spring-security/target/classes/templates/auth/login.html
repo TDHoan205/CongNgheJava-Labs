@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Lab 14 Spring Security</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Login page-specific styles */
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .login-card {
+            background-color: var(--card-bg, #1e293b);
+            border: 1px solid var(--card-border, #334155);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 100%;
+        }
+        .login-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .login-subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .login-accounts {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: rgba(99, 102, 241, 0.08);
+            border: 1px dashed rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .login-accounts strong { color: #818cf8; }
+        .login-accounts code {
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #c7d2fe;
+            font-family: 'Courier New', monospace;
+        }
+        .alert-login {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .alert-error-login {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .alert-success-login {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 0.85rem;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div style="text-align: center; font-size: 3rem; margin-bottom: 0.5rem;">🔐</div>
+            <h1 class="login-title">Đăng nhập</h1>
+            <p class="login-subtitle">Lab 14 - Spring Security</p>
+
+            <!-- Thông báo lỗi đăng nhập -->
+            <div th:if="${param.error}" class="alert-login alert-error-login">
+                ❌ Tên đăng nhập hoặc mật khẩu không đúng!
+            </div>
+            <!-- Thông báo sau khi đăng xuất -->
+            <div th:if="${param.logout}" class="alert-login alert-success-login">
+                ✅ Bạn đã đăng xuất thành công!
+            </div>
+
+            <!-- Form login gửi đến /login (POST) do Spring Security xử lý -->
+            <!-- Lưu ý: Spring Security 6 + Thymeleaf tự động inject CSRF token vào form -->
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label class="form-label">Tên đăng nhập:</label>
+                    <input type="text" name="username" class="form-control"
+                           placeholder="Nhập username..." required autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu:</label>
+                    <input type="password" name="password" class="form-control"
+                           placeholder="Nhập password..." required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-login">🚀 Đăng nhập</button>
+            </form>
+
+            <!-- Tài khoản mặc định để test -->
+            <div class="login-accounts">
+                <strong>📌 Tài khoản test (đã có trong CSDL):</strong><br>
+                • Admin: <code>admin</code> / <code>123456</code> (quyền ADMIN)<br>
+                • User:  <code>user</code>  / <code>123456</code> (quyền USER)
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 14: Bảo mật ứng dụng với Spring Security</p>
+        <p style="margin-top: 0.3rem;">Sinh viên thực hiện: <strong>Trần Đức Hoàn</strong> - MSSV: <strong>2030022</strong> - Lớp <strong>DCCNTT14.10.1</strong></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head(${pageTitle != null ? pageTitle : 'Form Sinh viên - Lab 14 Spring Security'})}">
+    <meta charset="UTF-8">
+    <title>Form Sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('students')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 650px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">
+                        <span th:text="${pageTitle != null ? pageTitle : 'Form Sinh viên'}">Form Sinh viên</span>
+                    </h1>
+                    <p class="card-subtitle">
+                        <span sec:authorize="hasRole('ADMIN')">
+                            🔐 Quyền <strong>ADMIN</strong> - thông tin sẽ được lưu trực tiếp vào CSDL.
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Student Form (Bài 9: CRUD - Thêm/Sửa) -->
+            <form th:action="@{/students/save}" th:object="${student}" method="post">
+                <!-- Hidden ID for update -->
+                <input type="hidden" th:field="*{id}">
+
+                <!-- Student Code -->
+                <div class="form-group">
+                    <label class="form-label">Mã sinh viên (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="text" th:field="*{studentCode}"
+                           th:class="${#fields.hasErrors('studentCode')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: SV2030022">
+                    <div class="error-text" th:if="${#fields.hasErrors('studentCode')}" th:errors="*{studentCode}">
+                        Lỗi mã sinh viên
+                    </div>
+                </div>
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label class="form-label">Họ và tên (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="text" th:field="*{fullName}"
+                           th:class="${#fields.hasErrors('fullName')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: Trần Đức Hoàn">
+                    <div class="error-text" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
+                        Lỗi họ tên
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label">Email (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="email" th:field="*{email}"
+                           th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="hoan.td@eaut.edu.vn">
+                    <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                        Lỗi email
+                    </div>
+                </div>
+
+                <!-- Class Name -->
+                <div class="form-group">
+                    <label class="form-label">Lớp học (<span style="color: #ef4444;">*</span>):</label>
+                    <input type="text" th:field="*{className}"
+                           th:class="${#fields.hasErrors('className')} ? 'form-control is-invalid' : 'form-control'"
+                           placeholder="Ví dụ: DCCNTT14.10.1">
+                    <div class="error-text" th:if="${#fields.hasErrors('className')}" th:errors="*{className}">
+                        Lỗi lớp học
+                    </div>
+                </div>
+
+                <!-- Form Buttons (chỉ ADMIN mới thấy) -->
+                <div sec:authorize="hasRole('ADMIN')" style="display: flex; gap: 1rem; margin-top: 1.75rem;">
+                    <button type="submit" class="btn btn-primary">💾 Lưu vào CSDL</button>
+                    <a th:href="@{/students}" class="btn btn-secondary">↩️ Hủy / Quay lại</a>
+                </div>
+
+                <!-- Nếu không phải ADMIN thì chỉ cho xem, không có nút Lưu -->
+                <div sec:authorize="hasRole('USER') and !hasRole('ADMIN')" class="alert alert-danger" style="margin-top: 1.75rem;">
+                    ⚠️ Bạn không có quyền lưu thay đổi. Vui lòng liên hệ quản trị viên.
+                    <div style="margin-top: 1rem;">
+                        <a th:href="@{/students}" class="btn btn-secondary">↩️ Quay lại danh sách</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

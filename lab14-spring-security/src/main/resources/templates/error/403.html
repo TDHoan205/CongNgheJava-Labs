@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Không có quyền truy cập</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .error-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .error-card-403 {
+            background-color: var(--card-bg, #1e293b);
+            border: 1px solid var(--card-border, #334155);
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 540px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .error-code-403 {
+            font-size: 6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ef4444, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .error-title-403 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .error-message-403 {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .user-info {
+            padding: 1rem;
+            background-color: rgba(99, 102, 241, 0.08);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #c7d2fe;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-wrapper">
+        <div class="error-card-403">
+            <div class="error-code-403">403</div>
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚫</div>
+            <h1 class="error-title-403">Không có quyền truy cập</h1>
+
+            <!-- Bài 5 + 6: Hiển thị user đang đăng nhập và giải thích -->
+            <div sec:authorize="isAuthenticated()" class="user-info">
+                👤 Xin chào <strong sec:authentication="name">user</strong> -
+                Vai trò của bạn (<span sec:authentication="principal.authorities">ROLE_USER</span>)
+                không đủ quyền để truy cập trang này.<br>
+                Chỉ tài khoản <strong>ADMIN</strong> mới có thể truy cập URL này.
+            </div>
+
+            <div sec:authorize="isAnonymous()" class="user-info">
+                Bạn cần đăng nhập với tài khoản ADMIN để truy cập trang này.
+            </div>
+
+            <p class="error-message-403">
+                Tài khoản của bạn không có quyền thực hiện hành động này.
+                Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                <a th:href="@{/students}" class="btn btn-secondary">🏠 Về trang Sinh viên</a>
+                <a th:href="@{/login}" class="btn btn-primary">🔐 Đăng nhập lại</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Học phần Công nghệ Java (IT3242) - Lab 14: Spring Security</p>
+    </footer>
+
+</body>
+</html>
