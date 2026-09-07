@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Chi tiết Môn học')}">
+    <meta charset="UTF-8">
+    <title>Chi tiết Môn học</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('courses')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📖 Chi tiết Môn học & Sinh viên theo học</h1>
+                    <p class="card-subtitle">Thông tin chi tiết môn học và danh sách sinh viên đăng ký</p>
+                </div>
+                <span class="badge badge-info" th:text="'ID: ' + ${course.id}">ID: 1</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Mã môn học:</div>
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #c084fc; margin-top: 0.2rem;" th:text="${course.courseCode}">IT3242</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Tên môn học:</div>
+                    <div style="font-size: 1.15rem; font-weight: 600; color: #f8fafc; margin-top: 0.2rem;" th:text="${course.courseName}">Công nghệ Java</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Số tín chỉ:</div>
+                    <div style="margin-top: 0.2rem;">
+                        <span class="badge badge-info" style="font-size: 0.95rem; padding: 0.35rem 0.85rem;" th:text="${course.credits} + ' Tín chỉ'">3 Tín chỉ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách sinh viên đã đăng ký môn học này -->
+            <div style="margin-top: 2rem; border-top: 1px solid #334155; padding-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #818cf8; margin-bottom: 1rem;">👨‍🎓 Danh sách Sinh viên Đã Đăng ký Môn này</h3>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã SV</th>
+                                <th>Họ và Tên</th>
+                                <th>Lớp</th>
+                                <th>Ngày Đăng Ký</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="e, iterStat : ${enrollments}">
+                                <td th:text="${iterStat.count}">1</td>
+                                <td>
+                                    <strong style="color: #818cf8;" th:text="${e.student.studentCode}">SV001</strong>
+                                </td>
+                                <td>
+                                    <a th:href="@{/students/detail/{id}(id=${e.student.id})}" style="color: #f8fafc; text-decoration: none;" th:text="${e.student.fullName}">Nguyễn Văn An</a>
+                                </td>
+                                <td>
+                                    <span class="badge badge-purple" th:text="${e.student.className}">DCCNTT13.10.1</span>
+                                </td>
+                                <td th:text="${e.enrollDate}">2026-09-07</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(enrollments)}">
+                                <td colspan="5" style="text-align: center; color: #94a3b8; padding: 1.5rem;">
+                                    Chưa có sinh viên nào đăng ký môn học này.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.75rem; border-top: 1px solid #334155; padding-top: 1.25rem;">
+                <a th:href="@{/courses/edit/{id}(id=${course.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-primary">✏️ Sửa môn học</a>
+                <a th:href="@{/courses/delete/{id}(id=${course.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-danger"
+                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa môn học [[${course.courseName}]]?');">🗑️ Xóa môn học</a>
+                <a th:href="@{/courses}" class="btn btn-secondary" style="margin-left: auto;">↩️ Quay lại danh sách</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Dashboard - Thống kê Hệ thống')}">
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('dashboard')}"></header>
+
+    <main>
+        <!-- Header Title Banner -->
+        <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); border-color: rgba(99, 102, 241, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1 class="card-title">🚀 Dashboard Quản trị & Thống kê</h1>
+                    <p class="card-subtitle" style="color: #cbd5e1;">Hệ thống Quản lý Sinh viên, Môn học & Đăng ký Học phần (Chương 4: Spring Framework)</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <a th:href="@{/enrollments/create}" class="btn btn-primary">➕ Đăng ký học phần</a>
+                    <a th:href="@{/students/create}" sec:authorize="hasRole('ADMIN')" class="btn btn-secondary">👨‍🎓 Thêm Sinh viên</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Stats Cards (Bài 9) -->
+        <div class="stats-grid">
+            <!-- Total Students -->
+            <div class="stat-card">
+                <div class="stat-icon blue">👨‍🎓</div>
+                <div>
+                    <div class="stat-value" th:text="${totalStudents}">4</div>
+                    <div class="stat-label">Tổng số Sinh viên</div>
+                </div>
+            </div>
+
+            <!-- Total Courses -->
+            <div class="stat-card">
+                <div class="stat-icon green">📚</div>
+                <div>
+                    <div class="stat-value" th:text="${totalCourses}">5</div>
+                    <div class="stat-label">Tổng số Môn học</div>
+                </div>
+            </div>
+
+            <!-- Total Enrollments -->
+            <div class="stat-card">
+                <div class="stat-icon orange">📝</div>
+                <div>
+                    <div class="stat-value" th:text="${totalEnrollments}">4</div>
+                    <div class="stat-label">Tổng lượt Đăng ký</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid with Recent Enrollments & Quick Access -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+            <!-- Recent Enrollments -->
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <h2 style="font-size: 1.25rem; font-weight: 700; color: #fff;">📝 Lượt Đăng ký gần đây</h2>
+                    <a th:href="@{/enrollments}" class="btn btn-secondary btn-sm">Xem tất cả &rarr;</a>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sinh viên</th>
+                                <th>Môn học</th>
+                                <th>Ngày đăng ký</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="e : ${recentEnrollments}">
+                                <td>
+                                    <strong style="color: #818cf8;" th:text="${e.student.fullName}">Trần Đức Hoàn</strong>
+                                    <div style="font-size: 0.8rem; color: #94a3b8;" th:text="${e.student.studentCode}">SV2030022</div>
+                                </td>
+                                <td>
+                                    <span style="color: #34d399; font-weight: 600;" th:text="${e.course.courseName}">Công nghệ Java</span>
+                                    <div style="font-size: 0.8rem; color: #94a3b8;" th:text="${e.course.courseCode} + ' (' + ${e.course.credits} + ' TC)'">IT3242</div>
+                                </td>
+                                <td th:text="${e.enrollDate}">2026-09-07</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(recentEnrollments)}">
+                                <td colspan="3" style="text-align: center; color: #94a3b8; padding: 1.5rem;">Chưa có lượt đăng ký nào.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Info & Features -->
+            <div class="card" style="margin-bottom: 0;">
+                <h2 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">📌 Phân quyền & Chức năng Lab 15</h2>
+                <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 8px; border: 1px solid #334155;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <strong style="color: #f87171;">👑 Quyền Quản trị viên (ADMIN)</strong>
+                            <span class="badge badge-admin">Full CRUD</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #94a3b8;">Thêm, sửa, xóa sinh viên; thêm, sửa, xóa môn học; hủy đăng ký học phần của mọi sinh viên.</p>
+                    </div>
+
+                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 8px; border: 1px solid #334155;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <strong style="color: #60a5fa;">👤 Quyền Người dùng / Sinh viên (USER)</strong>
+                            <span class="badge badge-user">Read & Register</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #94a3b8;">Xem danh sách sinh viên, danh sách môn học, đăng ký môn học và tra cứu lịch sử học phần đã đăng ký.</p>
+                    </div>
+
+                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 8px; border: 1px solid #334155;">
+                        <strong style="color: #34d399; display: block; margin-bottom: 0.35rem;">💾 Cơ sở dữ liệu JPA & Quan hệ</strong>
+                        <p style="font-size: 0.85rem; color: #94a3b8;">Bảng <code>students</code>, <code>courses</code> và <code>enrollments</code> (Many-To-One Student & Course). Kiểm tra chống đăng ký trùng lặp.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Môn học sinh viên đã đăng ký')}">
+    <meta charset="UTF-8">
+    <title>Môn học của sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('enrollments')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 850px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📚 Môn học Đã Đăng ký (Bài 8)</h1>
+                    <p class="card-subtitle">
+                        Sinh viên: <strong style="color: #fff;" th:text="${student.fullName}">Nguyễn Văn An</strong>
+                        (Mã SV: <strong style="color: #818cf8;" th:text="${student.studentCode}">SV001</strong> -
+                        Lớp: <span class="badge badge-purple" th:text="${student.className}">DCCNTT13.10.1</span>)
+                    </p>
+                </div>
+                <a th:href="@{/enrollments/create}" class="btn btn-primary btn-sm">➕ Đăng ký thêm môn</a>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã Môn</th>
+                            <th>Tên Môn Học</th>
+                            <th>Số Tín Chỉ</th>
+                            <th>Ngày Đăng Ký</th>
+                            <th sec:authorize="hasRole('ADMIN')">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e, iterStat : ${enrollments}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #c084fc;" th:text="${e.course.courseCode}">IT3242</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/courses/detail/{id}(id=${e.course.id})}" style="color: #34d399; font-weight: 600; text-decoration: none;" th:text="${e.course.courseName}">Công nghệ Java</a>
+                            </td>
+                            <td>
+                                <span class="badge badge-info" th:text="${e.course.credits} + ' TC'">3 TC</span>
+                            </td>
+                            <td th:text="${e.enrollDate}">2026-09-07</td>
+                            <td sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{/enrollments/delete/{id}(id=${e.id})}" class="btn btn-danger btn-sm"
+                                   th:onclick="return confirm('Bạn có chắc chắn muốn hủy đăng ký môn ' + [[${e.course.courseName}]] + '?');">🗑️ Hủy ĐK</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(enrollments)}">
+                            <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                Sinh viên này chưa đăng ký môn học nào.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <a th:href="@{/enrollments}" class="btn btn-secondary">↩️ Quay lại danh sách đăng ký</a>
+                <a th:href="@{/students/detail/{id}(id=${student.id})}" class="btn btn-secondary">👤 Xem hồ sơ sinh viên</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Đăng ký Học phần mới')}">
+    <meta charset="UTF-8">
+    <title>Đăng ký Học phần</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('enrollments')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 650px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📝 Đăng ký Học phần (Bài 5)</h1>
+                    <p class="card-subtitle">Chọn sinh viên và môn học cần đăng ký. Hệ thống tự động kiểm tra chống trùng lặp.</p>
+                </div>
+            </div>
+
+            <!-- Error Alert if already enrolled -->
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>⚠️</span>
+                <span th:text="${errorMessage}">Sinh viên đã đăng ký môn học này rồi!</span>
+            </div>
+
+            <!-- Enrollment Form -->
+            <form th:action="@{/enrollments/save}" method="post">
+                <!-- Select Student -->
+                <div class="form-group">
+                    <label class="form-label">Chọn Sinh viên (<span style="color: #ef4444;">*</span>):</label>
+                    <select name="studentId" class="form-control" required>
+                        <option value="">-- Vui lòng chọn sinh viên --</option>
+                        <option th:each="s : ${students}"
+                                th:value="${s.id}"
+                                th:text="${s.fullName} + ' (' + ${s.studentCode} + ' - ' + ${s.className} + ')'">
+                            Nguyễn Văn An (SV001 - DCCNTT13.10.1)
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Select Course -->
+                <div class="form-group">
+                    <label class="form-label">Chọn Môn học (<span style="color: #ef4444;">*</span>):</label>
+                    <select name="courseId" class="form-control" required>
+                        <option value="">-- Vui lòng chọn môn học --</option>
+                        <option th:each="c : ${courses}"
+                                th:value="${c.id}"
+                                th:text="${c.courseName} + ' (' + ${c.courseCode} + ' - ' + ${c.credits} + ' tín chỉ)'">
+                            Công nghệ Java (IT3242 - 3 tín chỉ)
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Form Buttons -->
+                <div style="display: flex; gap: 1rem; margin-top: 1.75rem;">
+                    <button type="submit" class="btn btn-primary">✅ Xác nhận Đăng ký</button>
+                    <a th:href="@{/enrollments}" class="btn btn-secondary">↩️ Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

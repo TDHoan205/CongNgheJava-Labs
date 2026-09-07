@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Chi tiết Sinh viên')}">
+    <meta charset="UTF-8">
+    <title>Chi tiết Sinh viên</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('students')}"></header>
+
+    <main>
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">👁️ Hồ sơ Sinh viên & Môn học đã đăng ký</h1>
+                    <p class="card-subtitle">Thông tin chi tiết được tải từ CSDL</p>
+                </div>
+                <span class="badge badge-info" th:text="'ID: ' + ${student.id}">ID: 1</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Mã sinh viên:</div>
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #818cf8; margin-top: 0.2rem;" th:text="${student.studentCode}">SV001</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Họ và tên:</div>
+                    <div style="font-size: 1.15rem; font-weight: 600; color: #f8fafc; margin-top: 0.2rem;" th:text="${student.fullName}">Nguyễn Văn An</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Email:</div>
+                    <div style="font-size: 1rem; color: #38bdf8; margin-top: 0.2rem;" th:text="${student.email}">an@eaut.edu.vn</div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem 1.25rem; border-radius: 8px; border: 1px solid #334155;">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Lớp học:</div>
+                    <div style="margin-top: 0.3rem;">
+                        <span class="badge badge-purple" style="font-size: 0.95rem; padding: 0.35rem 0.85rem;" th:text="${student.className}">DCCNTT13.10.1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bài 8: Danh sách các môn học mà sinh viên này đã đăng ký -->
+            <div style="margin-top: 2rem; border-top: 1px solid #334155; padding-top: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #34d399;">📚 Danh sách Môn học đã Đăng ký (Bài 8)</h3>
+                    <a th:href="@{/enrollments/create}" class="btn btn-primary btn-sm">➕ Đăng ký thêm môn</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Môn</th>
+                                <th>Tên Môn Học</th>
+                                <th>Số Tín Chỉ</th>
+                                <th>Ngày Đăng Ký</th>
+                                <th sec:authorize="hasRole('ADMIN')">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="e, iterStat : ${enrollments}">
+                                <td th:text="${iterStat.count}">1</td>
+                                <td>
+                                    <strong style="color: #c084fc;" th:text="${e.course.courseCode}">IT3242</strong>
+                                </td>
+                                <td th:text="${e.course.courseName}">Công nghệ Java</td>
+                                <td>
+                                    <span class="badge badge-info" th:text="${e.course.credits} + ' TC'">3 TC</span>
+                                </td>
+                                <td th:text="${e.enrollDate}">2026-09-07</td>
+                                <td sec:authorize="hasRole('ADMIN')">
+                                    <a th:href="@{/enrollments/delete/{id}(id=${e.id})}" class="btn btn-danger btn-sm"
+                                       th:onclick="return confirm('Bạn có chắc chắn muốn hủy đăng ký môn học này?');">🗑️ Hủy đăng ký</a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(enrollments)}">
+                                <td colspan="6" style="text-align: center; color: #94a3b8; padding: 1.5rem;">
+                                    Sinh viên này chưa đăng ký môn học nào.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.75rem; border-top: 1px solid #334155; padding-top: 1.25rem;">
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-primary">✏️ Sửa thông tin</a>
+                <a th:href="@{/students/delete/{id}(id=${student.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-danger"
+                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên [[${student.fullName}]]?');">🗑️ Xóa sinh viên</a>
+                <a th:href="@{/students}" class="btn btn-secondary" style="margin-left: auto;">↩️ Quay lại danh sách</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

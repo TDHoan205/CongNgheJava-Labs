@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Danh sách Môn học - Lab 15')}">
+    <meta charset="UTF-8">
+    <title>Danh sách môn học</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('courses')}"></header>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📚 Quản lý Danh sách Môn học</h1>
+                    <p class="card-subtitle">Dữ liệu từ bảng <code>courses</code> trong CSDL (Spring Data JPA)</p>
+                </div>
+                <a th:href="@{/courses/create}" sec:authorize="hasRole('ADMIN')" class="btn btn-primary">➕ Thêm Môn học mới</a>
+            </div>
+
+            <!-- Success / Error Alert -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>✅</span>
+                <span th:text="${successMessage}">Thao tác thành công!</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>⚠️</span>
+                <span th:text="${errorMessage}">Đã xảy ra lỗi!</span>
+            </div>
+
+            <!-- Search Form -->
+            <form th:action="@{/courses}" method="get" class="search-form">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm kiếm theo tên môn học hoặc mã môn..." style="max-width: 420px;">
+                <button type="submit" class="btn btn-secondary">🔍 Tìm kiếm</button>
+                <a th:if="${keyword != null and !keyword.isEmpty()}" th:href="@{/courses}" class="btn btn-secondary">❌ Bỏ lọc</a>
+            </form>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã Môn Học</th>
+                            <th>Tên Môn Học</th>
+                            <th>Số Tín Chỉ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c, iterStat : ${courses}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #c084fc;" th:text="${c.courseCode}">IT3242</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/courses/detail/{id}(id=${c.id})}" style="color: #f8fafc; font-weight: 600; text-decoration: none;" th:text="${c.courseName}">Công nghệ Java</a>
+                            </td>
+                            <td>
+                                <span class="badge badge-info" th:text="${c.credits} + ' Tín chỉ'">3 Tín chỉ</span>
+                            </td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a th:href="@{/courses/detail/{id}(id=${c.id})}" class="btn btn-secondary btn-sm">👁️ Chi tiết</a>
+                                <a th:href="@{/courses/edit/{id}(id=${c.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-secondary btn-sm">✏️ Sửa</a>
+                                <a th:href="@{/courses/delete/{id}(id=${c.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm"
+                                   th:onclick="return confirm('Bạn có chắc chắn muốn xóa môn học [[${c.courseName}]] khỏi CSDL?');">🗑️ Xóa</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(courses)}">
+                            <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                Không tìm thấy môn học nào trong cơ sở dữ liệu.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Danh sách Đăng ký Học phần - Lab 15')}">
+    <meta charset="UTF-8">
+    <title>Danh sách Đăng ký học phần</title>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header th:replace="~{layout :: header('enrollments')}"></header>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h1 class="card-title">📝 Quản lý Đăng ký Học phần (Bài 6)</h1>
+                    <p class="card-subtitle">Quan hệ Nhiều - Nhiều giữa Sinh viên và Môn học qua bảng <code>enrollments</code></p>
+                </div>
+                <a th:href="@{/enrollments/create}" class="btn btn-primary">➕ Đăng ký Học phần mới</a>
+            </div>
+
+            <!-- Success / Error Alert -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>✅</span>
+                <span th:text="${successMessage}">Thao tác thành công!</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>⚠️</span>
+                <span th:text="${errorMessage}">Đã xảy ra lỗi!</span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã SV</th>
+                            <th>Họ và Tên Sinh Viên</th>
+                            <th>Lớp</th>
+                            <th>Mã Môn</th>
+                            <th>Tên Môn Học</th>
+                            <th>Số TC</th>
+                            <th>Ngày Đăng Ký</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e, iterStat : ${enrollments}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <strong style="color: #818cf8;" th:text="${e.student.studentCode}">SV001</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/students/detail/{id}(id=${e.student.id})}" style="color: #f8fafc; font-weight: 600; text-decoration: none;" th:text="${e.student.fullName}">Nguyễn Văn An</a>
+                            </td>
+                            <td>
+                                <span class="badge badge-purple" th:text="${e.student.className}">DCCNTT13.10.1</span>
+                            </td>
+                            <td>
+                                <strong style="color: #c084fc;" th:text="${e.course.courseCode}">IT3242</strong>
+                            </td>
+                            <td>
+                                <a th:href="@{/courses/detail/{id}(id=${e.course.id})}" style="color: #34d399; text-decoration: none;" th:text="${e.course.courseName}">Công nghệ Java</a>
+                            </td>
+                            <td>
+                                <span class="badge badge-info" th:text="${e.course.credits} + ' TC'">3 TC</span>
+                            </td>
+                            <td th:text="${e.enrollDate}">2026-09-07</td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a th:href="@{/enrollments/student/{id}(id=${e.student.id})}" class="btn btn-secondary btn-sm">👁️ Lịch sử</a>
+                                <!-- Bài 7: Hủy đăng ký học phần -->
+                                <a th:href="@{/enrollments/delete/{id}(id=${e.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-danger btn-sm"
+                                   th:onclick="return confirm('Bạn có chắc chắn muốn hủy đăng ký môn ' + [[${e.course.courseName}]] + ' của sinh viên ' + [[${e.student.fullName}]] + '?');">🗑️ Hủy ĐK</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(enrollments)}">
+                            <td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                Chưa có sinh viên nào đăng ký học phần trong hệ thống.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+</body>
+</html>
