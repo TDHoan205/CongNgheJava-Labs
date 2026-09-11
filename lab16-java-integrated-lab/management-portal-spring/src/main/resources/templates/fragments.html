@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Management Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #34495e;
+        }
+        nav a.active {
+            background-color: #3498db;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logout-btn {
+            background-color: #e74c3c;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #229954;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .table th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 500;
+        }
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-PENDING { background-color: #f39c12; color: white; }
+        .status-PROCESSING { background-color: #3498db; color: white; }
+        .status-READY { background-color: #9b59b6; color: white; }
+        .status-SHIPPING { background-color: #00BCD4; color: white; }
+        .status-COMPLETED { background-color: #27ae60; color: white; }
+        .status-CANCELLED { background-color: #95a5a6; color: white; }
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        .pagination a, .pagination span {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination a:hover {
+            background-color: #f5f5f5;
+        }
+        .pagination .current {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .low-stock {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-group input[type="checkbox"] {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav th:fragment="header">
+            <div class="logo">
+                <strong>Management Portal</strong>
+            </div>
+            <ul>
+                <li><a th:href="@{/dashboard}" class="active">Dashboard</a></li>
+                <li><a th:href="@{/orders}">Orders</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li><a th:href="@{/history}">History</a></li>
+            </ul>
+            <div class="user-info">
+                <span sec:authentication="name">User</span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        
+        <div th:insert="~{::mainContent}">
+            <!-- Content will be inserted here -->
+        </div>
+    </main>
+    
+    <footer th:fragment="footer">
+        <p>&copy; 2026 Management Portal - Spring Boot Application</p>
+    </footer>
+</body>
+</html>

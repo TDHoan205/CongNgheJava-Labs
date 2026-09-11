@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details - Management Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5; }
+        header { background-color: #2c3e50; color: white; padding: 1rem 2rem; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; }
+        nav a:hover { background-color: #34495e; }
+        nav a.active { background-color: #3498db; }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .logout-btn { background-color: #e74c3c; padding: 0.5rem 1rem; border-radius: 4px; border: none; color: white; cursor: pointer; }
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        footer { background-color: #2c3e50; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+        
+        .page-title { font-size: 1.8rem; color: #2c3e50; margin-bottom: 1.5rem; }
+        .back-link { color: #3498db; text-decoration: none; margin-bottom: 1rem; display: inline-block; }
+        .back-link:hover { text-decoration: underline; }
+        
+        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
+        .card-title { font-size: 1.1rem; color: #2c3e50; margin-bottom: 1rem; font-weight: 600; }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .info-item { padding: 0.5rem 0; }
+        .info-item label { color: #7f8c8d; font-size: 0.9rem; display: block; margin-bottom: 0.25rem; }
+        .info-item span { color: #2c3e50; font-weight: 500; }
+        
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .table th { background-color: #34495e; color: white; font-weight: 500; }
+        .table tr:hover { background-color: #f8f9fa; }
+        
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500; }
+        .status-PENDING { background-color: #f39c12; color: white; }
+        .status-PROCESSING { background-color: #3498db; color: white; }
+        .status-READY { background-color: #9b59b6; color: white; }
+        .status-SHIPPING { background-color: #00BCD4; color: white; }
+        .status-COMPLETED { background-color: #27ae60; color: white; }
+        .status-CANCELLED { background-color: #95a5a6; color: white; }
+        
+        .actions { display: flex; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; display: inline-block; font-size: 0.95rem; }
+        .btn-success { background-color: #27ae60; color: white; }
+        .btn-success:hover { background-color: #229954; }
+        .btn-danger { background-color: #e74c3c; color: white; }
+        .btn-danger:hover { background-color: #c0392b; }
+        .btn-secondary { background-color: #95a5a6; color: white; }
+        .btn-secondary:hover { background-color: #7f8c8d; }
+        
+        .cancel-form { margin-top: 0.5rem; }
+        .cancel-form textarea { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 0.5rem; resize: vertical; }
+        
+        .alert { padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><strong>Management Portal</strong></div>
+            <ul>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/orders}" class="active">Orders</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li><a th:href="@{/history}">History</a></li>
+            </ul>
+            <div class="user-info">
+                <span sec:authentication="name">User</span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <a th:href="@{/orders}" class="back-link">&larr; Back to Orders List</a>
+        
+        <h1 class="page-title">Order #<span th:text="${order.id}">1</span></h1>
+        
+        <!-- Order Info -->
+        <div class="card">
+            <div class="card-title">Order Information</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Order ID</label>
+                    <span th:text="${order.id}">1</span>
+                </div>
+                <div class="info-item">
+                    <label>Customer ID</label>
+                    <span th:text="${order.customerId}">1</span>
+                </div>
+                <div class="info-item">
+                    <label>Created At</label>
+                    <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-01-01 00:00:00</span>
+                </div>
+                <div class="info-item">
+                    <label>Status</label>
+                    <span class="status-badge" th:classappend="'status-' + ${order.status}" th:text="${order.status}">PENDING</span>
+                </div>
+                <div class="info-item">
+                    <label>Total Amount</label>
+                    <span th:text="'$' + ${#numbers.formatDecimal(order.totalAmount, 1, 'COMMA', 2, 'POINT')}">$0.00</span>
+                </div>
+                <div class="info-item">
+                    <label>Note</label>
+                    <span th:text="${order.note ?: 'N/A'}">N/A</span>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="actions" th:if="${canApprove}">
+                <form th:action="@{/orders/{id}/approve(id=${order.id})}" method="post">
+                    <button type="submit" class="btn btn-success" 
+                            onclick="return confirm('Are you sure you want to approve shipping for this order?')">
+                        Approve Shipping
+                    </button>
+                </form>
+            </div>
+            
+            <div class="actions" th:if="${canCancel}">
+                <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" class="cancel-form">
+                    <textarea name="reason" placeholder="Enter cancellation reason (optional)"></textarea>
+                    <button type="submit" class="btn btn-danger" 
+                            onclick="return confirm('Are you sure you want to cancel this order?')">
+                        Cancel Order
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Order Items -->
+        <div class="card">
+            <div class="card-title">Order Items</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${order.items}">
+                        <td th:text="${item.product?.code ?: 'N/A'}">CODE001</td>
+                        <td th:text="${item.product?.name ?: 'N/A'}">Product Name</td>
+                        <td th:text="${item.quantity}">1</td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(item.unitPrice, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+                    </tr>
+                    <tr th:if="${order.items.isEmpty()}">
+                        <td colspan="5" style="text-align: center; color: #999;">No items in this order</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Status History -->
+        <div class="card">
+            <div class="card-title">Status History</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Old Status</th>
+                        <th>New Status</th>
+                        <th>Changed By</th>
+                        <th>Platform</th>
+                        <th>Changed At</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="h : ${history}">
+                        <td th:text="${h.orderId}">1</td>
+                        <td th:text="${h.oldStatus ?: 'N/A'}">N/A</td>
+                        <td th:text="${h.newStatus}">PENDING</td>
+                        <td th:text="${h.changedBy ?: 'System'}">1</td>
+                        <td th:text="${h.platform}">SPRING_BOOT</td>
+                        <td th:text="${#temporals.format(h.changedAt, 'yyyy-MM-dd HH:mm')}">2024-01-01 00:00</td>
+                        <td th:text="${h.note ?: 'N/A'}">N/A</td>
+                    </tr>
+                    <tr th:if="${history.isEmpty()}">
+                        <td colspan="7" style="text-align: center; color: #999;">No history available</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 Management Portal - Spring Boot Application</p>
+    </footer>
+</body>
+</html>
